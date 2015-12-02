@@ -8,7 +8,7 @@ import java.util.Random;
 
 //System.out.println("Your Host address: " + InetAddress.getLocalHost().getHostAddress()); //Print current IP address
 public class Server {
-    private ServerSocket serverSocket;
+    public ServerSocket serverSocket;
     private Socket server;
     public boolean status = true;
     private DataInputStream in;
@@ -43,7 +43,7 @@ public class Server {
 
 
         new Thread(() -> {
-            while (status){
+            while (status) {
                 try {
                     if (isReceive()) {
                         listenWord();
@@ -69,10 +69,8 @@ public class Server {
             figures.remove(index);
         }
         word = String.valueOf(wordBuffer);
-        //out.writeUTF(word);
         System.out.println("Word is: " + word);
     }
-
 
 
     public void listenWord() throws IOException {
@@ -126,33 +124,8 @@ public class Server {
     }
 
     public void disconnect() throws IOException {
-
         server.close();
         status = false;
         System.out.println("Disc");
-    }
-
-    /*public void run() {
-        while (status) {
-            try {
-                System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
-                connect();
-                System.out.println("Just connected to " + server.getRemoteSocketAddress());
-                listenClient();
-                listenWord();
-                System.out.println("Disconnected from" + server.getRemoteSocketAddress());
-                disconnect();
-            } catch (SocketTimeoutException s) {
-                System.out.println("Socket timed out!!!");
-                status = false;
-            } catch (IOException e) {
-                System.out.println("Connection failed");
-                status = false;
-            }
-        }
-    }*/
-
-    public static void main(String[] args) {
-        //new Server(6066).start();
     }
 }

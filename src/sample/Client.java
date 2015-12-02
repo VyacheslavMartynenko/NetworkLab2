@@ -9,7 +9,6 @@ public class Client {
     public boolean status = true;
     private DataOutputStream out;
     private DataInputStream in;
-//    private BufferedReader reader;
     public String word;
 
     public Client(String serverName, int port) {
@@ -49,13 +48,10 @@ public class Client {
     }
 
     public void listenWord() throws IOException {
-        //String prediction = reader.readLine();
-        //while (word.length() != 4) {}
         String prediction = word;
         System.out.println("Prediction is: " + prediction);
         out.writeUTF(prediction);
-        word="";
-        //check();
+        word = "";
     }
 
     public void check() throws IOException {
@@ -72,33 +68,9 @@ public class Client {
     }
 
     public void disconnect() throws IOException {
-  //      reader.close();
         clientSocket.close();
         status = false;
         System.out.println("Disc");
     }
 
-    /*public void run() {
-        while (status) {
-            try {
-                System.out.println("Connecting to " + clientSocket.getInetAddress() + " on port " + clientSocket.getLocalPort());
-                connect();
-                System.out.println("Just connected to " + clientSocket.getRemoteSocketAddress());
-                listenServer();
-                listenWord();
-                System.out.println("Disconnected from" + clientSocket.getRemoteSocketAddress());
-                disconnect();
-            } catch (SocketTimeoutException s) {
-                System.out.println("Socket timed out!");
-                status = false;
-            } catch (IOException e) {
-                System.out.println("Connection failed");
-                status = false;
-            }
-        }
-    }*/
-
-    public static void main(String[] args) {
-        //new Client("127.0.0.1", 6066).start();
-    }
 }

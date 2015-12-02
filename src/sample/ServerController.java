@@ -30,7 +30,6 @@ public class ServerController {
                 System.out.println("Socket timed out!");
                 server.status = false;
             } catch (IOException e) {
-                //System.out.println("Connection failed");
                 e.printStackTrace();
                 server.status = false;
             }
@@ -43,9 +42,7 @@ public class ServerController {
         new Thread(() -> {
             try {
                 server.listenClient();
-//                System.out.println("Disconnected from server");
             } catch (IOException e) {
-                //System.out.println("Connection failed");
                 e.printStackTrace();
                 server.status = false;
             }
