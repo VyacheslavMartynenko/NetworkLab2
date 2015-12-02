@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -14,6 +15,7 @@ public class ServerController {
 
     private Server server;
 
+    @FXML
     public void startServer() {
         startServer.setDisable(true);
         out.setText("Game started");
@@ -24,26 +26,27 @@ public class ServerController {
                 System.out.println("Connecting to ");
                 server.connect();
                 System.out.println("Just connected to ");
-                server.listenClient();
             } catch (SocketTimeoutException s) {
                 System.out.println("Socket timed out!");
                 server.status = false;
             } catch (IOException e) {
-                System.out.println("Connection failed");
+                //System.out.println("Connection failed");
+                e.printStackTrace();
                 server.status = false;
             }
         }).start();
     }
 
+    @FXML
     public void startGame() {
         startGame.setDisable(true);
         new Thread(() -> {
             try {
-                server.listenWord();
-                server.disconnect();
-                System.out.println("Disconnected from server");
+                server.listenClient();
+//                System.out.println("Disconnected from server");
             } catch (IOException e) {
-                System.out.println("Connection failed");
+                //System.out.println("Connection failed");
+                e.printStackTrace();
                 server.status = false;
             }
         }).start();

@@ -32,7 +32,8 @@ public class ClientController {
                     System.out.println("Socket timed out!");
                     client.status = false;
                 } catch (IOException e) {
-                    System.out.println("Connection failed");
+                    //System.out.println("Connection failed");
+                    e.printStackTrace();
                     client.status = false;
                 }
             }).start();
@@ -49,12 +50,12 @@ public class ClientController {
                     client.word = in.getText();
                     in.clear();
                     client.listenWord();
-                    client.disconnect();
-                    in.setDisable(true);
-                    submit.setDisable(true);
-                    System.out.println("Disconnected from");
+//                    in.setDisable(true);
+//                    submit.setDisable(true);
+                    //System.out.println("Disconnected from");
                 } catch (IOException e) {
-                    System.out.println("Connection failed");
+                    //System.out.println("Connection failed");
+                    e.printStackTrace();
                     client.status = false;
                 }
             }).start();

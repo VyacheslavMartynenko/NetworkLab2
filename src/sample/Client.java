@@ -9,7 +9,7 @@ public class Client {
     public boolean status = true;
     private DataOutputStream out;
     private DataInputStream in;
-    private BufferedReader reader;
+//    private BufferedReader reader;
     public String word;
 
     public Client(String serverName, int port) {
@@ -30,23 +30,32 @@ public class Client {
 
     public void listenServer() throws IOException {
         out.writeUTF("Client ready to game from " + clientSocket.getLocalSocketAddress());
-        startGame();
+
+        new Thread(() -> {
+            while (status) {
+                try {
+                    if (isReceive()) {
+                        check();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
-    public void startGame() throws IOException {
-        in.readUTF();
-        System.out.println("Word is ready");
-        reader = new BufferedReader(new InputStreamReader(System.in));
+    private boolean isReceive() throws IOException {
+        return in.available() != 0;
     }
 
     public void listenWord() throws IOException {
         //String prediction = reader.readLine();
-        while (word.length() != 4) {}
+        //while (word.length() != 4) {}
         String prediction = word;
         System.out.println("Prediction is: " + prediction);
         out.writeUTF(prediction);
         word="";
-        check();
+        //check();
     }
 
     public void check() throws IOException {
@@ -56,16 +65,17 @@ public class Client {
         String count = in.readUTF();
         if (check.equals("true")) {
             System.out.println("Server says " + check + " cows: " + cows + " bulls: " + bulls + " counts: " + count);
+            this.disconnect();
         } else {
             System.out.println("Server says " + check + " cows: " + cows + " bulls: " + bulls + " counts: " + count);
-            listenWord();
         }
     }
 
     public void disconnect() throws IOException {
-        reader.close();
+  //      reader.close();
         clientSocket.close();
         status = false;
+        System.out.println("Disc");
     }
 
     /*public void run() {

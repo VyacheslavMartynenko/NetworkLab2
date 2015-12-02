@@ -40,6 +40,23 @@ public class Server {
     public void listenClient() throws IOException {
         System.out.println(in.readUTF());
         generate();
+
+
+        new Thread(() -> {
+            while (status){
+                try {
+                    if (isReceive()) {
+                        listenWord();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private boolean isReceive() throws IOException {
+        return in.available() != 0;
     }
 
     public void generate() throws IOException {
@@ -52,9 +69,11 @@ public class Server {
             figures.remove(index);
         }
         word = String.valueOf(wordBuffer);
-        out.writeUTF(word);
+        //out.writeUTF(word);
         System.out.println("Word is: " + word);
     }
+
+
 
     public void listenWord() throws IOException {
         prediction = in.readUTF();
@@ -82,6 +101,9 @@ public class Server {
             out.writeUTF(String.valueOf(cows));
             out.writeUTF(String.valueOf(bulls));
             out.writeUTF(String.valueOf(count));
+
+
+            this.disconnect();
         } else {
             out.writeUTF("false");
 
@@ -100,14 +122,14 @@ public class Server {
             out.writeUTF(String.valueOf(count));
 
             System.out.println("Wrong prediction" + " cows: " + cows + " bulls: " + bulls + " counts: " + count);
-
-            listenWord();
         }
     }
 
     public void disconnect() throws IOException {
+
         server.close();
         status = false;
+        System.out.println("Disc");
     }
 
     /*public void run() {
