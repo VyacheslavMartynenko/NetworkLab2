@@ -1,9 +1,9 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
@@ -16,24 +16,23 @@ public class ClientController {
     private Client client;
 
     public void startGame() {
-        out.setText("Game started");
         start.setDisable(true);
         client = new Client("127.0.0.1", 6066);
         if (client.clientSocket == null) {
-            System.out.println("Cant connect");
+            Platform.runLater(() -> out.setText("Cant connect!"));
+            start.setDisable(false);
         } else {
             new Thread(() -> {
                 try {
-                    System.out.println("Connecting to ");
+                    Platform.runLater(() -> out.setText("Connecting..."));
                     client.connect();
-                    System.out.println("Just connected to ");
+                    Platform.runLater(() -> out.setText("Just connected"));
                     client.listenServer();
                 } catch (SocketTimeoutException s) {
-                    System.out.println("Socket timed out!");
-                    client.status = false;
+                    Platform.runLater(() -> out.setText("Socket timed out!"));
+                    start.setDisable(false);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    client.status = false;
                 }
             }).start();
         }
@@ -50,7 +49,6 @@ public class ClientController {
                     in.clear();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    client.status = false;
                 }
             }).start();
         }
