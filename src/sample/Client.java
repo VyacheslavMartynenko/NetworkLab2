@@ -3,13 +3,11 @@ package sample;
 import java.net.*;
 import java.io.*;
 
-//System.out.println("Your Host address: " + InetAddress.getLocalHost().getHostAddress()); //Print current IP address
 public class Client {
     public Socket clientSocket;
     public boolean status = true;
     private DataOutputStream out;
     private DataInputStream in;
-    public String word;
 
     public Client(String serverName, int port) {
         try {
@@ -47,11 +45,9 @@ public class Client {
         return in.available() != 0;
     }
 
-    public void listenWord() throws IOException {
-        String prediction = word;
-        System.out.println("Prediction is: " + prediction);
-        out.writeUTF(prediction);
-        word = "";
+    public void listenWord(String word) throws IOException {
+        System.out.println("Prediction is: " + word);
+        out.writeUTF(word);
     }
 
     public void check() throws IOException {

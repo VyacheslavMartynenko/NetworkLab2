@@ -46,9 +46,8 @@ public class ClientController {
             out.setText(in.getText());
             new Thread(() -> {
                 try {
-                    client.word = in.getText();
+                    client.listenWord(in.getText());
                     in.clear();
-                    client.listenWord();
                 } catch (IOException e) {
                     e.printStackTrace();
                     client.status = false;
