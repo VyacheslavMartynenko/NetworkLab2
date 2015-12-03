@@ -1,4 +1,4 @@
-package sample;
+package sample.client;
 
 import java.net.*;
 import java.io.*;
@@ -56,9 +56,11 @@ public class Client {
         String bulls = in.readUTF();
         String count = in.readUTF();
         if (check.equals("true")) {
+            ClientPresenter.getInstance().handleResult("blaaaaaaaa1");
             System.out.println("Server says " + check + " cows: " + cows + " bulls: " + bulls + " counts: " + count);
             this.disconnect();
         } else {
+            ClientPresenter.getInstance().handleResult("asdasaaaaaaaa1");
             System.out.println("Server says " + check + " cows: " + cows + " bulls: " + bulls + " counts: " + count);
         }
     }

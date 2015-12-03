@@ -1,4 +1,4 @@
-package sample;
+package sample.server;
 
 import java.net.*;
 import java.io.*;
@@ -94,6 +94,7 @@ public class Server {
             count++;
             cows = 4;
             bulls = 4;
+            ServerPresenter.getInstance().handleResult("blaaaaaaaa1");
             System.out.println("Correct prediction" + " cows: " + cows + " bulls: " + bulls + " counts: " + count);
 
             out.writeUTF(String.valueOf(cows));
@@ -119,6 +120,7 @@ public class Server {
             out.writeUTF(String.valueOf(bulls));
             out.writeUTF(String.valueOf(count));
 
+            ServerPresenter.getInstance().handleResult("asdfsadfaaaaaaa1");
             System.out.println("Wrong prediction" + " cows: " + cows + " bulls: " + bulls + " counts: " + count);
         }
     }

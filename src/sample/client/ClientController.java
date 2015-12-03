@@ -1,4 +1,4 @@
-package sample;
+package sample.client;
 
 import javafx.application.Platform;
 import javafx.scene.control.Button;
@@ -14,6 +14,10 @@ public class ClientController {
     public Button start;
 
     private Client client;
+
+    public ClientController() {
+        ClientPresenter.getInstance().setClientController(this);
+    }
 
     public void startGame() {
         start.setDisable(true);
@@ -65,5 +69,9 @@ public class ClientController {
         });
     }
 
+
+public void setResult(String s) {
+    System.out.println(s);
+}
 
 }

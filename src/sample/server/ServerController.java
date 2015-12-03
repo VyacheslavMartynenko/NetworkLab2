@@ -1,4 +1,4 @@
-package sample;
+package sample.server;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -14,6 +14,11 @@ public class ServerController {
     public Button startServer;
 
     private Server server;
+
+    public ServerController() {
+        ServerPresenter.getInstance().setServerController(this);
+    }
+
 
     @FXML
     public void startServer() {
@@ -43,5 +48,9 @@ public class ServerController {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    public void setResult(String s) {
+        System.out.println(s);
     }
 }
