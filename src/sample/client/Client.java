@@ -9,15 +9,9 @@ public class Client {
     private DataOutputStream out;
     private DataInputStream in;
 
-    public Client(String serverName, int port) {
-        try {
-            clientSocket = new Socket(serverName, port);
-            clientSocket.setSoTimeout(3000);
-        } catch (SocketException e) {
-            System.out.println("Could not set up timeout");
-        } catch (IOException e) {
-            System.out.println("Could not listen on port" + port);
-        }
+    public Client(String serverName, int port) throws IOException {
+        clientSocket = new Socket(serverName, port);
+        clientSocket.setSoTimeout(3000);
     }
 
     public void connect() throws IOException {
@@ -55,15 +49,17 @@ public class Client {
         String bulls = in.readUTF();
         String count = in.readUTF();
         if (check.equals("true")) {
-            ClientPresenter.getInstance().handleResult(check + " cows: " + cows + " bulls: " + bulls + " counts: " + count);
+            ClientPresenter.getInstance().handleResult(" cows: " + cows + " bulls: " + bulls + " counts: " + count);
             this.disconnect();
         } else {
-            ClientPresenter.getInstance().handleResult(check + " cows: " + cows + " bulls: " + bulls + " counts: " + count);
+            ClientPresenter.getInstance().handleResult(" cows: " + cows + " bulls: " + bulls + " counts: " + count);
         }
     }
 
     public void disconnect() throws IOException {
-        clientSocket.close();
+        if (in != null) in.close();
+        if (out != null) out.close();
+        if (clientSocket != null) clientSocket.close();
         status = false;
         ClientPresenter.getInstance().handleResult("Disconnected!");
     }

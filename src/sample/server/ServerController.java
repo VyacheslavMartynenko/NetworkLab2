@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
@@ -23,15 +24,21 @@ public class ServerController {
     @FXML
     public void startServer() {
         startServer.setDisable(true);
-        server = new Server(6066);
+
         new Thread(() -> {
+            server = new Server(6066);
             try {
                 Platform.runLater(() -> out.setText("Connecting..."));
                 server.connect();
                 Platform.runLater(() -> out.setText("Just connected."));
             } catch (SocketTimeoutException s) {
-                startServer.setDisable(false);
                 Platform.runLater(() -> out.setText("Socket timed out!"));
+                try {
+                    server.disconnect();
+                } catch (IOException e) {
+                    Platform.runLater(() -> out.setText("Cant close connection!"));
+                }
+                startServer.setDisable(false);
             } catch (IOException e) {
                 e.printStackTrace();
             }
