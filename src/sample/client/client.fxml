@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.client.ClientController">
-   <children>
-   
-       <TextField fx:id="in" layoutX="20.0" layoutY="50.0" onKeyReleased="#check" />
-       <Label fx:id="out" alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="90.0" prefHeight="20.0" prefWidth="150.0" text="Status of the game" />
-       <Button fx:id="start" layoutX="20.0" layoutY="130.0" mnemonicParsing="false" onAction="#startGame" prefHeight="25.0" prefWidth="60.0" text="Connect" />
-       <Button fx:id="submit" layoutX="110.0" layoutY="130.0" mnemonicParsing="false" onAction="#submitResult" prefHeight="25.0" prefWidth="60.0" text="Submit" />
-       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="20.0" prefHeight="20.0" prefWidth="150.0" text="Enter four figures" />
-   </children>
-
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0"
+            prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sample.client.ClientController">
+    <TextField fx:id="in" layoutX="20.0" layoutY="50.0" onKeyReleased="#check"/>
+    <Label fx:id="out" alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="90.0" prefHeight="20.0"
+           prefWidth="150.0" text="Status of the game"/>
+    <Button fx:id="start" layoutX="20.0" layoutY="130.0" mnemonicParsing="false" onAction="#startGame" prefHeight="25.0"
+            prefWidth="60.0" text="Connect"/>
+    <Button fx:id="submit" layoutX="110.0" layoutY="130.0" mnemonicParsing="false" onAction="#submitResult"
+            prefHeight="25.0" prefWidth="60.0" text="Submit"/>
+    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="20.0" prefHeight="20.0" prefWidth="150.0"
+           text="Enter four figures"/>
 </AnchorPane>

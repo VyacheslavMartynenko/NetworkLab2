@@ -46,7 +46,6 @@ public class Client {
     }
 
     public void listenWord(String word) throws IOException {
-        System.out.println("Prediction is: " + word);
         out.writeUTF(word);
     }
 
@@ -56,19 +55,17 @@ public class Client {
         String bulls = in.readUTF();
         String count = in.readUTF();
         if (check.equals("true")) {
-            ClientPresenter.getInstance().handleResult("blaaaaaaaa1");
-            System.out.println("Server says " + check + " cows: " + cows + " bulls: " + bulls + " counts: " + count);
+            ClientPresenter.getInstance().handleResult(check + " cows: " + cows + " bulls: " + bulls + " counts: " + count);
             this.disconnect();
         } else {
-            ClientPresenter.getInstance().handleResult("asdasaaaaaaaa1");
-            System.out.println("Server says " + check + " cows: " + cows + " bulls: " + bulls + " counts: " + count);
+            ClientPresenter.getInstance().handleResult(check + " cows: " + cows + " bulls: " + bulls + " counts: " + count);
         }
     }
 
     public void disconnect() throws IOException {
         clientSocket.close();
         status = false;
-        System.out.println("Disc");
+        ClientPresenter.getInstance().handleResult("Disconnected!");
     }
 
 }

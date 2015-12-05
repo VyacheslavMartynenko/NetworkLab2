@@ -38,7 +38,7 @@ public class Server {
     }
 
     public void listenClient() throws IOException {
-        System.out.println(in.readUTF());
+        in.readUTF();
         generate();
 
 
@@ -69,7 +69,6 @@ public class Server {
             figures.remove(index);
         }
         word = String.valueOf(wordBuffer);
-        System.out.println("Word is: " + word);
     }
 
 
@@ -80,7 +79,6 @@ public class Server {
         for (char aConvert : convert) {
             values.add(String.valueOf(aConvert));
         }
-        System.out.println("Prediction is " + prediction);
         check();
     }
 
@@ -94,8 +92,7 @@ public class Server {
             count++;
             cows = 4;
             bulls = 4;
-            ServerPresenter.getInstance().handleResult("blaaaaaaaa1");
-            System.out.println("Correct prediction" + " cows: " + cows + " bulls: " + bulls + " counts: " + count);
+            ServerPresenter.getInstance().handleResult("word: " + word + " prediction: " + prediction);
 
             out.writeUTF(String.valueOf(cows));
             out.writeUTF(String.valueOf(bulls));
@@ -120,14 +117,13 @@ public class Server {
             out.writeUTF(String.valueOf(bulls));
             out.writeUTF(String.valueOf(count));
 
-            ServerPresenter.getInstance().handleResult("asdfsadfaaaaaaa1");
-            System.out.println("Wrong prediction" + " cows: " + cows + " bulls: " + bulls + " counts: " + count);
+            ServerPresenter.getInstance().handleResult("word: " + word + " prediction: " + prediction);
         }
     }
 
     public void disconnect() throws IOException {
         server.close();
         status = false;
-        System.out.println("Disc");
+        ServerPresenter.getInstance().handleResult("Disconnected!");
     }
 }

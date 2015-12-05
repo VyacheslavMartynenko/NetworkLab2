@@ -41,6 +41,7 @@ public class ServerController {
     @FXML
     public void startGame() {
         startGame.setDisable(true);
+        out.setText("Game started!");
         new Thread(() -> {
             try {
                 server.listenClient();
@@ -51,6 +52,6 @@ public class ServerController {
     }
 
     public void setResult(String s) {
-        System.out.println(s);
+        out.setText(s);
     }
 }

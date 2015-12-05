@@ -71,7 +71,7 @@ public class ClientController {
 
 
 public void setResult(String s) {
-    System.out.println(s);
+    out.setText(s);
 }
 
 }
