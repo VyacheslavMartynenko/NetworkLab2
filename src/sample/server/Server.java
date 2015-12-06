@@ -37,19 +37,27 @@ public class Server {
         out = new DataOutputStream(server.getOutputStream());
     }
 
+    @SuppressWarnings("Duplicates")
     public void listenClient() throws IOException {
         in.readUTF();
         generate();
 
-
         new Thread(() -> {
+            TimeoutThread timeoutThread = new TimeoutThread(10000);
             while (status) {
                 try {
                     if (isReceive()) {
-                        listenWord();
+                        timeoutThread.stopCheckTimeout(); //stop current timeout
+                        boolean gameFinished = listenWord();
+                        if (gameFinished) {
+                            return;
+                        }
+
+                        timeoutThread = new TimeoutThread(5000); // start new
+                        timeoutThread.start();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    status = false;
                 }
             }
         }).start();
@@ -72,17 +80,17 @@ public class Server {
     }
 
 
-    public void listenWord() throws IOException {
+    public boolean listenWord() throws IOException {
         prediction = in.readUTF();
         values.clear();
         char[] convert = prediction.toCharArray();
         for (char aConvert : convert) {
             values.add(String.valueOf(aConvert));
         }
-        check();
+        return check();
     }
 
-    public void check() throws IOException {
+    public boolean check() throws IOException {
         int cows = 0;
         int bulls = 0;
 
@@ -100,6 +108,7 @@ public class Server {
 
 
             this.disconnect();
+            return true;
         } else {
             out.writeUTF("false");
 
@@ -118,6 +127,7 @@ public class Server {
             out.writeUTF(String.valueOf(count));
 
             ServerPresenter.getInstance().handleResult("word: " + word + " prediction: " + prediction);
+            return false;
         }
     }
 
@@ -128,5 +138,40 @@ public class Server {
         if (serverSocket != null) serverSocket.close();
         status = false;
         ServerPresenter.getInstance().handleResult("Disconnected!");
+    }
+
+    class TimeoutThread extends Thread {
+        private final int time;
+        private boolean isStop = false;
+
+        public TimeoutThread(int time) {
+            super();
+            this.time = time;
+        }
+
+        public void stopCheckTimeout() {
+            this.isStop = true;
+        }
+
+        @SuppressWarnings("Duplicates")
+        @Override
+        public void run() {
+            try {
+                long endTime = System.currentTimeMillis() + time;
+                int count = time / 1000;
+                while (!isStop) {
+                    count--;
+                    Thread.sleep(1000);
+                    ServerPresenter.getInstance().handleResult(String.valueOf(count));
+                    if (System.currentTimeMillis() > endTime) {
+                        disconnect();
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

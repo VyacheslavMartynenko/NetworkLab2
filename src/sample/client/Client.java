@@ -19,17 +19,26 @@ public class Client {
         in = new DataInputStream(clientSocket.getInputStream());
     }
 
+    @SuppressWarnings("Duplicates")
     public void listenServer() throws IOException {
         out.writeUTF("Client ready to game from " + clientSocket.getLocalSocketAddress());
 
         new Thread(() -> {
+            TimeoutThread timeoutThread = new TimeoutThread(10000);
             while (status) {
                 try {
                     if (isReceive()) {
-                        check();
+                        timeoutThread.stopCheckTimeout(); //stop current timeout
+                        boolean gameFinished = check();
+                        if (gameFinished) {
+                            return;
+                        }
+
+                        timeoutThread = new TimeoutThread(5000); // start new
+                        timeoutThread.start();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    status = false;
                 }
             }
         }).start();
@@ -43,7 +52,7 @@ public class Client {
         out.writeUTF(word);
     }
 
-    public void check() throws IOException {
+    public boolean check() throws IOException {
         String check = in.readUTF();
         String cows = in.readUTF();
         String bulls = in.readUTF();
@@ -51,8 +60,10 @@ public class Client {
         if (check.equals("true")) {
             ClientPresenter.getInstance().handleResult(" cows: " + cows + " bulls: " + bulls + " counts: " + count);
             this.disconnect();
+            return true;
         } else {
             ClientPresenter.getInstance().handleResult(" cows: " + cows + " bulls: " + bulls + " counts: " + count);
+            return false;
         }
     }
 
@@ -64,4 +75,39 @@ public class Client {
         ClientPresenter.getInstance().handleResult("Disconnected!");
     }
 
+    class TimeoutThread extends Thread {
+        private final int time;
+        private boolean isStop = false;
+
+        public TimeoutThread(int time) {
+            super();
+            this.time = time;
+        }
+
+        public void stopCheckTimeout() {
+            this.isStop = true;
+        }
+
+        @SuppressWarnings("Duplicates")
+        @Override
+        public void run() {
+            try {
+                long endTime = System.currentTimeMillis() + time;
+                int count = time / 1000;
+                while (!isStop) {
+                    count--;
+                    Thread.sleep(1000);
+                    ClientPresenter.getInstance().handleResult(String.valueOf(count));
+                    if (System.currentTimeMillis() > endTime) {
+                        disconnect();
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 }
+

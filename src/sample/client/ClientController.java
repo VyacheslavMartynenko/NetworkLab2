@@ -75,5 +75,4 @@ public class ClientController {
     public void setResult(String s) {
         out.setText(s);
     }
-
 }
